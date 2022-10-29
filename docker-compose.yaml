@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  # Kafka Cluster
+
+  zookeeper:
+    image: zookeeper:${ZK_VERSION}
+    ports:
+      - ${ZK_HOST_PORT}:${ZK_CONTAINER_PORT}
+    restart: unless-stopped
+
+  broker:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    ports:
+      - ${KAFKA_HOST_PORT}:${KAFKA_CONTAINER_PORT}
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:${ZK_HOST_PORT}'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+
+  # Python Microservices
