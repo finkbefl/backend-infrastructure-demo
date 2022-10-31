@@ -29,6 +29,12 @@ services:
 
   # Python Microservices
 
+  sensor-simulator:
+    container_name: sensor-simulator
+    build:
+      context: ./sensor-simulator
+    restart: unless-stopped
+
   # MQTT Broker
 
   mosquitto:
