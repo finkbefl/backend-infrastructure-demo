@@ -28,3 +28,14 @@ services:
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
 
   # Python Microservices
+
+  # MQTT Broker
+
+  mosquitto:
+    container_name: first-steps-mqtt-broker
+    image: eclipse-mosquitto
+    ports:
+      - ${MQTT_BROKER_HOST_PORT}:${MQTT_BROKER_CONTAINER_PORT}
+    restart: unless-stopped
+    volumes:
+      - ./config/mqtt-broker:/mosquitto/config/
