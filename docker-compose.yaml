@@ -47,6 +47,11 @@ services:
       context: ./sensor-simulator
     restart: unless-stopped
 
+  collection:
+    build:
+      context: ./collection
+    restart: unless-stopped
+
   # MQTT Broker (For test purposes if no mqtt proxy)
 
   # mosquitto:
