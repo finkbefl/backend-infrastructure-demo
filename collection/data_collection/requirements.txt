@@ -1,0 +1,1 @@
+faust[rocksdb, fast, uvloop]==1.10.4

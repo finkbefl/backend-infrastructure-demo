@@ -27,6 +27,18 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
 
+  kafka-mqtt-proxy:
+    image: confluentinc/cp-kafka-mqtt:${CONFLUENT_VERSION}
+    ports:
+      - ${MQTT_PROXY_HOST_PORT}:${MQTT_PROXY_CONTAINER_PORT}
+    restart: unless-stopped
+    depends_on:
+      - broker
+    environment:
+      KAFKA_MQTT_BOOTSTRAP_SERVERS: PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data1:.*
+      KAFKA_MQTT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
+
   # Python Microservices
 
   sensor-simulator:
@@ -35,13 +47,18 @@ services:
       context: ./sensor-simulator
     restart: unless-stopped
 
-  # MQTT Broker
-
-  mosquitto:
-    container_name: first-steps-mqtt-broker
-    image: eclipse-mosquitto
-    ports:
-      - ${MQTT_BROKER_HOST_PORT}:${MQTT_BROKER_CONTAINER_PORT}
+  collection:
+    build:
+      context: ./collection
     restart: unless-stopped
-    volumes:
-      - ./config/mqtt-broker:/mosquitto/config/
+
+  # MQTT Broker (For test purposes if no mqtt proxy)
+
+  # mosquitto:
+  #   container_name: first-steps-mqtt-broker
+  #   image: eclipse-mosquitto
+  #   ports:
+  #     - ${MQTT_BROKER_HOST_PORT}:${MQTT_BROKER_CONTAINER_PORT}
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./config/mqtt-broker:/mosquitto/config/

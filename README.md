@@ -12,6 +12,7 @@ Demo project of a backend infrastructure in python with kafka and faust for data
 
 - Demo project can be executed on a local machine. The deployment to a cloud is currently not considered.
 - confluentinc/cp-kafka: Community licensed ([Docker Image Reference](https://docs.confluent.io/platform/current/installation/docker/image-reference.html))
+- confluentinc/cp-kafka-mqtt: Commercially licensed ([Docker Image Reference](https://docs.confluent.io/platform/current/installation/docker/image-reference.html))
 
 # Project Structure
 
