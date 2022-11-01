@@ -36,7 +36,8 @@ def main () :
     client = mqtt.Client("sensor1")
     client.on_connect = on_connect_sensor
     #client.username_pw_set(username="admin", password="admin")
-    client.connect("first-steps-mqtt-broker", 1883, 60)
+    #client.connect("first-steps-mqtt-broker", 1883, 60) # mosquitto broker
+    client.connect("kafka-mqtt-proxy", 1883, 60) # confluent proxy
     client.loop_start()
 
     try:
