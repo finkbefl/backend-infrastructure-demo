@@ -51,6 +51,9 @@ services:
     build:
       context: ./collection
     restart: unless-stopped
+    ports:
+      - ${COLLECTION_STATS_HOST_PORT}:${COLLECTION_STATS_CONTAINER_PORT}
+    
 
   # MQTT Broker (For test purposes if no mqtt proxy)
 
@@ -62,3 +65,11 @@ services:
   #   restart: unless-stopped
   #   volumes:
   #     - ./config/mqtt-broker:/mosquitto/config/
+
+  prometheus:
+    image: prom/prometheus:${PROMETHEUS_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
