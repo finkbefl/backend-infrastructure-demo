@@ -53,6 +53,13 @@ services:
     restart: unless-stopped
     ports:
       - ${COLLECTION_STATS_HOST_PORT}:${COLLECTION_STATS_CONTAINER_PORT}
+
+  processing:
+    build:
+      context: ./processing
+    restart: unless-stopped
+    ports:
+      - ${PROCESSING_STATS_HOST_PORT}:${PROCESSING_STATS_CONTAINER_PORT}
     
 
   # MQTT Broker (For test purposes if no mqtt proxy)
