@@ -249,6 +249,117 @@
             ],
             "title": "data_processing",
             "type": "timeseries"
+        },
+        {
+            "datasource": "Prometheus",
+            "fieldConfig": 
+            {
+                "defaults": 
+                {
+                    "color": 
+                    {
+                        "mode": "palette-classic"
+                    },
+                    "custom": 
+                    {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": 
+                        {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": 
+                        {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": 
+                        {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": 
+                        {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": 
+            {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 9
+            },
+            "id": 2,
+            "options": 
+            {
+                "legend": 
+                {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": 
+                {
+                    "mode": "single"
+                }
+            },
+            "targets": 
+            [
+                {
+                    "exemplar": true,
+                    "expr": "increase(sensor_values_received_total{instance=\"aggregation:7004\"}[60s])",
+                    "interval": "5s",
+                    "legendFormat": "sensor values received per minute",
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                },
+                {
+                    "exemplar": true,
+                    "expr": "increase(sensor_values_aggregated_total{instance=\"aggregation:7004\"}[60s])",
+                    "interval": "5s",
+                    "legendFormat": "sensor values aggregated per minute",
+                    "queryType": "randomWalk",
+                    "refId": "B"
+                },
+                {
+                    "exemplar": true,
+                    "expr": "increase(sensor_values_sent_total{instance=\"aggregation:7004\"}[60s])",
+                    "interval": "5s",
+                    "legendFormat": "sensor values sent per minute",
+                    "queryType": "randomWalk",
+                    "refId": "C"
+                }
+            ],
+            "title": "data_aggregation",
+            "type": "timeseries"
         }
     ],
     "refresh": "5s",

@@ -23,6 +23,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
@@ -60,6 +61,13 @@ services:
     restart: unless-stopped
     ports:
       - ${PROCESSING_STATS_HOST_PORT}:${PROCESSING_STATS_CONTAINER_PORT}
+
+  aggregation:
+    build:
+      context: ./aggregation
+    restart: unless-stopped
+    ports:
+      - ${AGGREGATION_STATS_HOST_PORT}:${AGGREGATION_STATS_CONTAINER_PORT}
     
 
   # MQTT Broker (For test purposes if no mqtt proxy)

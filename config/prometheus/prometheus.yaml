@@ -11,3 +11,7 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets: ['processing:7003']
+  - job_name: 'aggregation'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['aggregation:7004']

@@ -30,15 +30,17 @@ sensor_data_topic_1 = app.topic("sensor-data1", partitions=8)
 src_data_topic = app.topic("src-data", partitions=8)
 
 
+
 @app.agent(sensor_data_topic_1)
 async def on_event(stream) -> None:
+    # Create additional topics
+    await sensor_data_topic_1.declare()
+    await src_data_topic.declare()
     async for msg_key, msg_value in stream.items():
         # At first imcrement the event counter for prometheus monitoring of the received sensor values
         SENSOR_VALUES_COUNT.inc()
         logger.info(f'Received new sensor value {msg_value}')
         serialized_message = json.loads(msg_value)
-        #for pair_name, pair_value in serialized_message.items():
-        #    logger.info(f"Key: {msg_key} - Extracted pair: {pair_name}: {pair_value}")
         # Increment the prometheus counter for collected values
         COLLECTED_VALUES_COUNT.inc()
         logger.info(f'Publish the sensor value to {src_data_topic}')
