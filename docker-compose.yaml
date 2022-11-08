@@ -52,15 +52,15 @@ services:
     ports:
       - ${PG_HOST_PORT}:${PG_CONTAINER_PORT}
 
-  # pgAdmin (for development and administration of the postgres database)
+  # # pgAdmin (for development and administration of the postgres database)
 
-  pgadmin:
-    image: chorss/docker-pgadmin4
-    restart: unless-stopped
-    ports:
-      - ${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}
-    depends_on:
-      - database
+  # pgadmin:
+  #   image: chorss/docker-pgadmin4
+  #   restart: unless-stopped
+  #   ports:
+  #     - ${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}
+  #   depends_on:
+  #     - database
 
   # Python Microservices
 
