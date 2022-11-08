@@ -40,6 +40,28 @@ services:
       KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data1:.*
       KAFKA_MQTT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
 
+  # Database
+
+  database:
+    image: postgres:${PG_VERSION}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: temperature
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - ${PG_HOST_PORT}:${PG_CONTAINER_PORT}
+
+  # # pgAdmin (for development and administration of the postgres database)
+
+  # pgadmin:
+  #   image: chorss/docker-pgadmin4
+  #   restart: unless-stopped
+  #   ports:
+  #     - ${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}
+  #   depends_on:
+  #     - database
+
   # Python Microservices
 
   sensor-simulator:
@@ -68,6 +90,13 @@ services:
     restart: unless-stopped
     ports:
       - ${AGGREGATION_STATS_HOST_PORT}:${AGGREGATION_STATS_CONTAINER_PORT}
+
+  load:
+    build:
+      context: ./load
+    restart: unless-stopped
+    ports:
+      - ${LOAD_STATS_HOST_PORT}:${LOAD_STATS_CONTAINER_PORT}
     
 
   # MQTT Broker (For test purposes if no mqtt proxy)

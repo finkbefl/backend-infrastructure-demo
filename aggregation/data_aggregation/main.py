@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 app = faust.App(SERVICE_NAME, broker="broker:29092", value_serializer='raw')
 processed_data_topic = app.topic("processed-data", partitions=8)
-aggregated_data_topic = app.topic("aggregated-data", partitions=8)
+aggregated_data_topic = app.topic("data_aggregation-average-changelog", partitions=8)
 
 # Table for data aggregation (average temp)
 average_table = app.Table('average', default=dict)
