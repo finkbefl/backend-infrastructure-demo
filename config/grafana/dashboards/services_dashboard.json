@@ -115,7 +115,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_received_total{instance=\"collection:7002\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values received per minute",
+                    "legendFormat": "sensor values received",
                     "queryType": "randomWalk",
                     "refId": "A"
                 },
@@ -123,7 +123,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_collected_total{instance=\"collection:7002\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values collected per minute",
+                    "legendFormat": "sensor values collected",
                     "queryType": "randomWalk",
                     "refId": "B"
                 },
@@ -131,12 +131,12 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_sent_total{instance=\"collection:7002\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values sent per minute",
+                    "legendFormat": "sensor values sent",
                     "queryType": "randomWalk",
                     "refId": "C"
                 }
             ],
-            "title": "data_collection",
+            "title": "data_collection: Number of Values per Min",
             "type": "timeseries"
         },
         {
@@ -226,7 +226,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_received_total{instance=\"processing:7003\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values received per minute",
+                    "legendFormat": "sensor values received",
                     "queryType": "randomWalk",
                     "refId": "A"
                 },
@@ -234,7 +234,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_processed_total{instance=\"processing:7003\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values processed per minute",
+                    "legendFormat": "sensor values processed",
                     "queryType": "randomWalk",
                     "refId": "B"
                 },
@@ -242,12 +242,12 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_sent_total{instance=\"processing:7003\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values sent per minute",
+                    "legendFormat": "sensor values sent",
                     "queryType": "randomWalk",
                     "refId": "C"
                 }
             ],
-            "title": "data_processing",
+            "title": "data_processing: Number of Values per Min",
             "type": "timeseries"
         },
         {
@@ -317,7 +317,7 @@
                 "x": 0,
                 "y": 9
             },
-            "id": 2,
+            "id": 3,
             "options": 
             {
                 "legend": 
@@ -337,7 +337,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_received_total{instance=\"aggregation:7004\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values received per minute",
+                    "legendFormat": "sensor values received",
                     "queryType": "randomWalk",
                     "refId": "A"
                 },
@@ -345,7 +345,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_aggregated_total{instance=\"aggregation:7004\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values aggregated per minute",
+                    "legendFormat": "sensor values aggregated",
                     "queryType": "randomWalk",
                     "refId": "B"
                 },
@@ -353,12 +353,12 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_sent_total{instance=\"aggregation:7004\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values sent per minute",
+                    "legendFormat": "sensor values sent",
                     "queryType": "randomWalk",
                     "refId": "C"
                 }
             ],
-            "title": "data_aggregation",
+            "title": "data_aggregation: Number of Values per Min",
             "type": "timeseries"
         },
         {
@@ -428,7 +428,7 @@
                 "x": 12,
                 "y": 9
             },
-            "id": 2,
+            "id": 4,
             "options": 
             {
                 "legend": 
@@ -448,7 +448,7 @@
                     "exemplar": true,
                     "expr": "increase(sensor_values_loaded_total{instance=\"load:7005\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "sensor values loaded into db per minute",
+                    "legendFormat": "sensor values loaded into db",
                     "queryType": "randomWalk",
                     "refId": "A"
                 },
@@ -456,12 +456,12 @@
                     "exemplar": true,
                     "expr": "increase(aggregated_values_loaded_total{instance=\"load:7005\"}[60s])",
                     "interval": "5s",
-                    "legendFormat": "aggregated values loaded into db per minute",
+                    "legendFormat": "aggregated values loaded into db",
                     "queryType": "randomWalk",
                     "refId": "B"
                 }
             ],
-            "title": "db_loader",
+            "title": "db_loader: Number of Values per Min",
             "type": "timeseries"
         },
         {
@@ -531,7 +531,7 @@
                 "x": 0,
                 "y": 18
             },
-            "id": 2,
+            "id": 5,
             "options": 
             {
                 "legend": 
@@ -551,7 +551,7 @@
                     "exemplar": true,
                     "expr": "sensor_values_requests_total{instance=\"api-gateway:7006\"}",
                     "interval": "5s",
-                    "legendFormat": "sensor value requests from db since start",
+                    "legendFormat": "sensor value requests",
                     "queryType": "randomWalk",
                     "refId": "A"
                 },
@@ -559,7 +559,7 @@
                     "exemplar": true,
                     "expr": "aggregated_values_requests_total{instance=\"api-gateway:7006\"}",
                     "interval": "5s",
-                    "legendFormat": "aggregated value requests from db since start",
+                    "legendFormat": "aggregated value requests",
                     "queryType": "randomWalk",
                     "refId": "B"
                 },
@@ -567,12 +567,107 @@
                     "exemplar": true,
                     "expr": "latest_value_requests_total{instance=\"api-gateway:7006\"}",
                     "interval": "5s",
-                    "legendFormat": "latest value requests from db since start",
+                    "legendFormat": "latest value requests",
                     "queryType": "randomWalk",
                     "refId": "C"
                 }
             ],
-            "title": "api_gateway",
+            "title": "api_gateway: Number of REST API Requests",
+            "type": "timeseries"
+        },
+        {
+            "datasource": "Prometheus",
+            "fieldConfig": 
+            {
+                "defaults": 
+                {
+                    "color": 
+                    {
+                        "mode": "palette-classic"
+                    },
+                    "custom": 
+                    {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": 
+                        {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": 
+                        {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": 
+                        {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": 
+                        {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": 
+            {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 18
+            },
+            "id": 6,
+            "options": 
+            {
+                "legend": 
+                {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": 
+                {
+                    "mode": "single"
+                }
+            },
+            "targets": 
+            [
+                {
+                    "exemplar": true,
+                    "expr": "latest_value_requests_age_seconds_bucket{instance=\"api-gateway:7006\"}",
+                    "interval": "5s",
+                    "legendFormat": "cumulative bucket for age <= {{le}} seconds",
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "title": "api_gateway: Age of Requested Latest Values",
             "type": "timeseries"
         }
     ],
