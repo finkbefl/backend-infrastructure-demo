@@ -19,3 +19,7 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets: ['load:7005']
+  - job_name: 'api-gateway'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api-gateway:7006']
