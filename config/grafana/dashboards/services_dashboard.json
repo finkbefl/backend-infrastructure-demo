@@ -527,11 +527,201 @@
             "gridPos": 
             {
                 "h": 9,
-                "w": 12,
+                "w": 24,
                 "x": 0,
                 "y": 18
             },
             "id": 5,
+            "options": 
+            {
+                "legend": 
+                {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": 
+                {
+                    "mode": "single"
+                }
+            },
+            "targets": 
+            [
+                {
+                    "exemplar": true,
+                    "expr": "sensor_value_latency_bucket{instance=\"load:7005\"}",
+                    "interval": "5s",
+                    "legendFormat": "cumulative bucket for sensor value latency <= {{le}} seconds",
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "title": "db_loader: Latency of Sensor Value Processing",
+            "type": "timeseries"
+        },
+        {
+            "datasource": "Prometheus",
+            "fieldConfig": 
+            {
+                "defaults": 
+                {
+                    "color": 
+                    {
+                        "mode": "palette-classic"
+                    },
+                    "custom": 
+                    {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": 
+                        {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": 
+                        {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": 
+                        {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": 
+                        {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": 
+            {
+                "h": 9,
+                "w": 24,
+                "x": 0,
+                "y": 27
+            },
+            "id": 6,
+            "options": 
+            {
+                "legend": 
+                {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": 
+                {
+                    "mode": "single"
+                }
+            },
+            "targets": 
+            [
+                {
+                    "exemplar": true,
+                    "expr": "aggregated_value_latency_bucket{instance=\"load:7005\"}",
+                    "interval": "5s",
+                    "legendFormat": "cumulative bucket for aggregation value latency <= {{le}} seconds",
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "title": "db_loader: Latency of Sensor Value Processing + Aggregation",
+            "type": "timeseries"
+        },
+        {
+            "datasource": "Prometheus",
+            "fieldConfig": 
+            {
+                "defaults": 
+                {
+                    "color": 
+                    {
+                        "mode": "palette-classic"
+                    },
+                    "custom": 
+                    {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": 
+                        {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": 
+                        {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": 
+                        {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": 
+                        {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": 
+            {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 36
+            },
+            "id": 7,
             "options": 
             {
                 "legend": 
@@ -640,9 +830,9 @@
                 "h": 9,
                 "w": 12,
                 "x": 12,
-                "y": 18
+                "y": 36
             },
-            "id": 6,
+            "id": 8,
             "options": 
             {
                 "legend": 
