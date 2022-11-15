@@ -23,8 +23,119 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
 
+  kafka-mqtt-proxy:
+    image: confluentinc/cp-kafka-mqtt:${CONFLUENT_VERSION}
+    ports:
+      - ${MQTT_PROXY_HOST_PORT}:${MQTT_PROXY_CONTAINER_PORT}
+    restart: unless-stopped
+    depends_on:
+      - broker
+    environment:
+      KAFKA_MQTT_BOOTSTRAP_SERVERS: PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data1:.*
+      KAFKA_MQTT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
+
+  # Database
+
+  database:
+    image: postgres:${PG_VERSION}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: temperature
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - ${PG_HOST_PORT}:${PG_CONTAINER_PORT}
+
+  # # pgAdmin (for development and administration of the postgres database)
+
+  # pgadmin:
+  #   image: chorss/docker-pgadmin4
+  #   restart: unless-stopped
+  #   ports:
+  #     - ${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}
+  #   depends_on:
+  #     - database
+
   # Python Microservices
+
+  sensor-simulator:
+    container_name: sensor-simulator
+    build:
+      context: ./sensor-simulator
+    restart: unless-stopped
+
+  collection:
+    build:
+      context: ./collection
+    restart: unless-stopped
+    ports:
+      - ${COLLECTION_STATS_HOST_PORT}:${COLLECTION_STATS_CONTAINER_PORT}
+
+  processing:
+    build:
+      context: ./processing
+    restart: unless-stopped
+    ports:
+      - ${PROCESSING_STATS_HOST_PORT}:${PROCESSING_STATS_CONTAINER_PORT}
+
+  aggregation:
+    build:
+      context: ./aggregation
+    restart: unless-stopped
+    ports:
+      - ${AGGREGATION_STATS_HOST_PORT}:${AGGREGATION_STATS_CONTAINER_PORT}
+
+  load:
+    build:
+      context: ./load
+    restart: unless-stopped
+    ports:
+      - ${LOAD_STATS_HOST_PORT}:${LOAD_STATS_CONTAINER_PORT}
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    restart: unless-stopped
+    ports:
+      - ${GATEWAY_HOST_PORT}:${GATEWAY_CONTAINER_PORT}
+      - ${GATEWAY_STATS_HOST_PORT}:${GATEWAY_STATS_CONTAINER_PORT}
+    
+
+  # MQTT Broker (For test purposes if no mqtt proxy)
+
+  # mosquitto:
+  #   container_name: first-steps-mqtt-broker
+  #   image: eclipse-mosquitto
+  #   ports:
+  #     - ${MQTT_BROKER_HOST_PORT}:${MQTT_BROKER_CONTAINER_PORT}
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./config/mqtt-broker:/mosquitto/config/
+
+  # Monitoring with Grafana and Prometheus
+
+  prometheus:
+    image: prom/prometheus:${PROMETHEUS_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
+    volumes:
+      - ./config/grafana/provisioning:/etc/grafana/provisioning
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}

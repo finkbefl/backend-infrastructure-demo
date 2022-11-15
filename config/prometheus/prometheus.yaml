@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'collection'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['collection:7002']
+  - job_name: 'processing'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['processing:7003']
+  - job_name: 'aggregation'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['aggregation:7004']
+  - job_name: 'load'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['load:7005']
+  - job_name: 'api-gateway'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api-gateway:7006']
