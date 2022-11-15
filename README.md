@@ -30,10 +30,14 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 - Grafana: `localhost:3000`  
   The dashboard visualize
   - the number of data values received, processed and sent per min for the data_collection, data_processing and data_aggregation microservices
-  - the number of values loaded into the database
+  - the number of values loaded into the database per min
   - the latency of the data values from the data simulation to the loading into the database
   - the number of REST API requests and the age of the requested last values
-- Consumer API (Swagger UI): `localhost:8007/docs`
+- Consumer API (Swagger UI): `localhost:8007/docs`  
+  There are three HTTP GET methods implemented:
+  - `/temperature`: Get all temperature values from the database for a specific sensor number between two timestamps
+  - `/average`: Get all average values from the database for a specific sensor number between two timestamps
+  - `/temperature_latest`: Get the latest available temperature value from the database for a specific sensor number
   ![Consumer_API](.docs/../docs/assets/images/Consumer_API.png)
 
 # Used Sources
@@ -63,6 +67,6 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 
 # Bibliography
 
-Alaasam, A. B. A., Radchenko, G., & Tchernykh, A. (2019). Stateful Stream Processing for Digital Twins: Microservice-Based Kafka Stream DSL. 2019 International Multi-Conference on Engineering, Computer and Information Sciences (SIBIRCON), 0804–0809. https://doi.org/10.1109/SIBIRCON48586.2019.8958367
+> Alaasam, A. B. A., Radchenko, G., & Tchernykh, A. (2019). Stateful Stream Processing for Digital Twins: Microservice-Based Kafka Stream DSL. 2019 International Multi-Conference on Engineering, Computer and Information Sciences (SIBIRCON), 0804–0809. https://doi.org/10.1109/SIBIRCON48586.2019.8958367
 
 
