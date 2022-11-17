@@ -8,7 +8,19 @@ Demo project of a backend infrastructure in python with kafka and faust for data
 - Docker (tested with version 20.10.20)
 - Docker Compose (tested with version 2.10.2)
 
-# Project Structure
+# Launch
+
+To get the infrastructure running on a local machine, only the following steps are required:
+1. Clone the repository
+    ```
+    git clone https://github.com/finkbefl/backend-infrastructure-demo.git
+    ```
+2. Launching the Docker infrastructure using the Docker Compose file
+   ```
+   docker compose -f "docker-compose.yaml" up -d --build
+   ```
+
+# Project Description
 
 To build a flexible, scalable and fault-tolerant environment with low latency, the modern stream processing system Kafka will be used. The infrastructure is implemented with only one broker. Depending on the load on the productive system, distribution and replication can be implemented at any time using multiple brokers to increase the scalability and availability of the system.
 
@@ -24,6 +36,69 @@ The data from a Postgres database are provided to consumers through a REST API v
 
 ![Data_Infrastructure](.docs/../docs/assets/images/Data_Infrastructure.png)
 Source: Own illustration based on Alaasam et al., 2019, Fig. 1
+
+# Project Structure
+
+TODO: Describe modules/files
+
+├── aggregation  
+│   ├── data_aggregation  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   └── Dockerfile  
+├── api-gateway  
+│   ├── api_gateway  
+│   │   ├── database.py  
+│   │   ├── data_definition.py  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   └── Dockerfile  
+├── collection  
+│   ├── data_collection  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   └── Dockerfile  
+├── config  
+│   ├── grafana  
+│   │   ├── dashboards  
+│   │   │   └── services_dashboard.json  
+│   │   └── provisioning  
+│   │       ├── dashboards  
+│   │       │   └── default.yaml  
+│   │       └── datasources  
+│   │           └── datasource.yaml  
+│   ├── mqtt-broker  
+│   │   └── mosquitto.conf  
+│   └── prometheus  
+│       └── prometheus.yaml  
+├── docs  
+│   └── assets  
+│       └── images  
+│           ├── Consumer_API.png  
+│           └── Data_Infrastructure.png  
+├── load  
+│   ├── db_loader  
+│   │   ├── database.py  
+│   │   ├── data_definition.py  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   └── Dockerfile  
+├── processing  
+│   ├── data_processing  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   └── Dockerfile  
+├── sensor-simulator  
+│   ├── mqtt_proof_of_concept_scripts  
+│   │   ├── publish.py  
+│   │   └── subscribe.py  
+│   ├── temp_sensors  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   └── Dockerfile  
+├── docker-compose.yaml  
+├── LICENSE  
+└── README.md  
 
 # External Interfaces
 
