@@ -28,6 +28,7 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 # External Interfaces
 
 - Grafana: `localhost:3000`  
+  Initial login: user = admin, password = admin  
   The dashboard visualize
   - the number of data values received, processed and sent per min for the data_collection, data_processing and data_aggregation microservices
   - the number of values loaded into the database per min
