@@ -41,7 +41,7 @@ db = Database()
 @app.agent(processed_data_topic)
 async def on_event(stream) -> None:
     async for msg_key, msg_value in stream.items():
-        logger.info(f'Key: {msg_key} - Received new sensor value {msg_value}')
+        logger.info(f'Received new sensor value {msg_value}')
         serialized_message = json.loads(msg_value)
         # At first imcrement the event counter for prometheus monitoring of the received sensor values
         SENSOR_VALUES_COUNT.inc()
