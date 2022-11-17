@@ -41,11 +41,17 @@ def main () :
     client.loop_start()
 
     try:
-        logger.info ( "Simulating temp sensor 1: Publish to topic /sensor1/temp" )	
+        logger.info ( "Simulating temp sensor 1: Publish integer values to topic /sensor1/temp" )	
         new_thread = Thread(target=publishTemp,args=(client, "/sensor1/temp", 1))
         new_thread.start()
     except:
         logger.error("Error: unable to start thread for sensor 1")
+    try:
+        logger.info ( "Simulating temp sensor 2: Publish float values to topic /sensor2/temp" )	
+        new_thread = Thread(target=publishTemp,args=(client, "/sensor2/temp", 1, False))
+        new_thread.start()
+    except:
+        logger.error("Error: unable to start thread for sensor 2")
 
 def on_connect_sensor(mqttc, userdata, flags, rc):
     """
@@ -62,7 +68,7 @@ def on_connect_sensor(mqttc, userdata, flags, rc):
     """
     logger.info(str(mqttc) + "Connected with result code" + str(rc))
 
-def publishTemp(mqtt_client, topic, delay_time):
+def publishTemp(mqtt_client, topic, delay_time, data_type_int=True):
     """
         Publish a temperature value between 20 and 30 to a mqtt topic periodically
         ----------
@@ -70,13 +76,19 @@ def publishTemp(mqtt_client, topic, delay_time):
             mqtt-client:    The mqtt-client
             topic:          The topic to publish
             delay_time:     The time between two values
+            data_type_int:  The data type of the value, True = int, False = float
         ----------
         Returns :
         no returns
     """
     while 1:
-        data = random.randint(20, 30)
-        dataToSend = json.dumps({'timestamp': str((datetime.datetime.now().timestamp())),'topic': topic, 'value': str(data)})
+        if data_type_int:
+            # Random Integer
+            data = random.randint(20, 30)
+        else:
+            # Random Float
+            data = random.uniform(20, 30)
+        dataToSend = json.dumps({'timestamp': str((datetime.datetime.now().timestamp())), 'value': str(data)})
         logger.info(dataToSend)
         mqtt_client.publish(topic, dataToSend, 0)
         time.sleep(delay_time)

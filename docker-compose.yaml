@@ -37,7 +37,7 @@ services:
       - broker
     environment:
       KAFKA_MQTT_BOOTSTRAP_SERVERS: PLAINTEXT_INTERNAL://broker:29092
-      KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data1:.*
+      KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data2:.*2/temp, sensor-data1:.*1/temp
       KAFKA_MQTT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
 
   # Database
