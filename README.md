@@ -41,6 +41,8 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 
 TODO: Describe modules/files
 
+`$ tree --dirsfirst`  
+.  
 ├── aggregation  
 │   ├── data_aggregation  
 │   │   ├── main.py  
