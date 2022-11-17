@@ -87,7 +87,7 @@ class Database():
             async with session.begin():
                 logger.info(f"Get sensor values between timestamp range {timestamp_start} - {timestamp_end} for sensor num {sensor_num}")
                 selected_values_execution = await session.execute(
-                    select(Temperature).filter(Temperature.sensor_num == sensor_num).where((Temperature.timestamp >= timestamp_start) & (Temperature.timestamp <= timestamp_end)))
+                    select(Temperature).filter(Temperature.sensor_num == sensor_num).where((Temperature.timestamp >= timestamp_start) & (Temperature.timestamp <= timestamp_end)).order_by(Temperature.id.desc()))
                 selected_values = selected_values_execution.scalars().all()
                 ret_data = [self.__row_to_dict(i) for i in selected_values]
                 return ret_data
@@ -111,7 +111,7 @@ class Database():
             async with session.begin():
                 logger.info(f"Get average values between timestamp range {timestamp_start} - {timestamp_end} for sensor num {sensor_num}")
                 selected_values_execution = await session.execute(
-                    select(Average).filter(Temperature.sensor_num == sensor_num).where((Temperature.timestamp >= timestamp_start) & (Temperature.timestamp <= timestamp_end)))
+                    select(Average).filter(Average.sensor_num == sensor_num).where((Average.timestamp >= timestamp_start) & (Average.timestamp <= timestamp_end)).order_by(Average.id.desc()))
                 selected_values = selected_values_execution.scalars().all()
                 ret_data = [self.__row_to_dict(i) for i in selected_values]
                 return ret_data
