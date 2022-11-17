@@ -41,11 +41,17 @@ def main () :
     client.loop_start()
 
     try:
-        logger.info ( "Simulating temp sensor 1: Publish to topic /sensor1/temp" )	
+        logger.info ( "Simulating temp sensor 1: Publish integer values to topic /sensor1/temp" )	
         new_thread = Thread(target=publishTemp,args=(client, "/sensor1/temp", 1))
         new_thread.start()
     except:
         logger.error("Error: unable to start thread for sensor 1")
+    try:
+        logger.info ( "Simulating temp sensor 2: Publish float values to topic /sensor2/temp" )	
+        new_thread = Thread(target=publishTemp,args=(client, "/sensor2/temp", 1, False))
+        new_thread.start()
+    except:
+        logger.error("Error: unable to start thread for sensor 2")
 
 def on_connect_sensor(mqttc, userdata, flags, rc):
     """
