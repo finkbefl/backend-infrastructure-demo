@@ -33,7 +33,7 @@ def main () :
 
     ### IoT Sensors ###
 
-    client = mqtt.Client("sensor1")
+    client = mqtt.Client("sensors")
     client.on_connect = on_connect_sensor
     #client.username_pw_set(username="admin", password="admin")
     #client.connect("first-steps-mqtt-broker", 1883, 60) # mosquitto broker
@@ -89,7 +89,7 @@ def publishTemp(mqtt_client, topic, delay_time, data_type_int=True):
             # Random Float
             data = random.uniform(20, 30)
         dataToSend = json.dumps({'timestamp': str((datetime.datetime.now().timestamp())), 'value': str(data)})
-        logger.info(dataToSend)
+        logger.info(f'Publish data {dataToSend} to topic {topic}')
         mqtt_client.publish(topic, dataToSend, 0)
         time.sleep(delay_time)
     mqtt_client.loop_stop()
