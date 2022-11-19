@@ -8,7 +8,35 @@ Demo project of a backend infrastructure in python with kafka and faust for data
 - Docker (tested with version 20.10.20)
 - Docker Compose (tested with version 2.10.2)
 
-# Project Structure
+# Launch
+
+To get the infrastructure running on a local machine, only the following steps are required:
+1. Clone the repository
+    ```
+    git clone https://github.com/finkbefl/backend-infrastructure-demo.git
+    ```
+2. Launching the Docker infrastructure using the Docker Compose file
+   ```
+   docker compose -f "docker-compose.yaml" up -d --build
+   ```
+
+# External Interfaces
+
+- Grafana: `localhost:3000`  
+  Initial login: user = admin, password = admin  
+  The dashboard visualize
+  - the number of data values received, processed and sent per min for the data_collection, data_processing and data_aggregation microservices
+  - the number of values loaded into the database per min
+  - the latency of the data values from the data simulation to the loading into the database
+  - the number of REST API requests and the age of the requested last values
+- Consumer API (Swagger UI): `localhost:8007/docs`  
+  There are three HTTP GET methods implemented:
+  - `/temperature`: Get all temperature values from the database for a specific sensor number between two timestamps
+  - `/average`: Get all average values from the database for a specific sensor number between two timestamps
+  - `/temperature_latest`: Get the latest available temperature value from the database for a specific sensor number
+  ![Consumer_API](.docs/../docs/assets/images/Consumer_API.png)
+
+# Project Description
 
 To build a flexible, scalable and fault-tolerant environment with low latency, the modern stream processing system Kafka will be used. The infrastructure is implemented with only one broker. Depending on the load on the productive system, distribution and replication can be implemented at any time using multiple brokers to increase the scalability and availability of the system.
 
@@ -25,20 +53,69 @@ The data from a Postgres database are provided to consumers through a REST API v
 ![Data_Infrastructure](.docs/../docs/assets/images/Data_Infrastructure.png)
 Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 
-# External Interfaces
+# Project Structure
 
-- Grafana: `localhost:3000`  
-  The dashboard visualize
-  - the number of data values received, processed and sent per min for the data_collection, data_processing and data_aggregation microservices
-  - the number of values loaded into the database per min
-  - the latency of the data values from the data simulation to the loading into the database
-  - the number of REST API requests and the age of the requested last values
-- Consumer API (Swagger UI): `localhost:8007/docs`  
-  There are three HTTP GET methods implemented:
-  - `/temperature`: Get all temperature values from the database for a specific sensor number between two timestamps
-  - `/average`: Get all average values from the database for a specific sensor number between two timestamps
-  - `/temperature_latest`: Get the latest available temperature value from the database for a specific sensor number
-  ![Consumer_API](.docs/../docs/assets/images/Consumer_API.png)
+`$ tree --dirsfirst`  
+`.`  
+`├── aggregation`: Module which implements data-aggregation   
+`│   ├── data_aggregation`: Microservice implementations   
+`│   │   ├── main.py`: Aggregation of the processed data in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── api-gateway`: Module which implements the API gateway  
+`│   ├── api_gateway`: Microservice implementations    
+`│   │   ├── database.py`: Postgres database interface  
+`│   │   ├── data_definition.py`: Definitions of the database table structures  
+`│   │   ├── main.py`: Consumer REST-API via python FastAPI  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container   
+`│   └── Dockerfile`: Docker image definition  
+`├── collection`: Module which implements data-collection  
+`│   ├── data_collection`: Microservice implementations    
+`│   │   ├── main.py`: Collection of the raw sensor data in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── config`: Central configuration  
+`│   ├── grafana`: Grafana config  
+`│   │   ├── dashboards`: Dashboard definitions  
+`│   │   │   └── services_dashboard.json`: The microservice dashboard  
+`│   │   └── provisioning`: Grafana provision  
+`│   │       ├── dashboards`: Dashboard provisioning  
+`│   │       │   └── default.yaml`: Provision the dashboard  
+`│   │       └── datasources`: Datasource provisioning  
+`│   │           └── datasource.yaml`: Provision the datasources  
+`│   ├── mqtt-broker`: MQTT broker config (temporarily used for testing)  
+`│   │   └── mosquitto.conf`: Mosquitto MQTT broker config  
+`│   └── prometheus`: Prometheus config  
+`│       └── prometheus.yaml`: Configuration of prometheus  
+`├── docs`: Files for documentation  
+`│   └── assets`: Assets for documentation  
+`│       └── images`: Images for documentation  
+`│           ├── Consumer_API.png`: Screenshot of the consumer API swagger UI  
+`│           └── Data_Infrastructure.png`: Architecture overview  
+`├── load`: Module which implements data-loading into the database   
+`│   ├── db_loader`: Microservice implementations    
+`│   │   ├── database.py`: Postgres database interface  
+`│   │   ├── data_definition.py`: Definitions of the database table structures  
+`│   │   ├── main.py`: Loading of the processed and aggregated data into the database in python   
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── processing`: Module which implements data-processing   
+`│   ├── data_processing`: Microservice implementations    
+`│   │   ├── main.py`: Processing of the collected data in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── sensor-simulator`: Module which implements the sensor simulation  
+`│   ├── mqtt_proof_of_concept_scripts`: Python scripts used for first PoC using paho mqtt python client  
+`│   │   ├── publish.py`: Python script to test mqtt publishing  
+`│   │   └── subscribe.py`: Python script to test mqtt subscribing  
+`│   ├── temp_sensors`: Microservice implementations    
+`│   │   ├── main.py`: Publish random temperature values between a range in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── docker-compose.yaml`: Docker Compose file to launch the docker infrastructure  
+`├── .env`: Docker Compose environment variables  
+`├── LICENSE`: License file  
+`└── README.md`: This README file  
 
 # Used Sources
 
@@ -51,19 +128,13 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 - confluentinc/cp-kafka: Community licensed ([Docker Image Reference](https://docs.confluent.io/platform/current/installation/docker/image-reference.html))
 - confluentinc/cp-kafka-mqtt: Commercially licensed ([Docker Image Reference](https://docs.confluent.io/platform/current/installation/docker/image-reference.html))
 - Latency and age measurements depend on synchronisation of the different container-system-times (not an issue on a local machine)
-
-# Status and Open Points
-
-- Sensor simulation can be further extended by data variation and number of sensors (currently only one sensor streams integer temperature values every second)
-- Microservice Implementations
-  - Error handling must be extended
-  - Unit Tests should be added
-  - Performance of the system still has potential for improvement
-- Security
-  - Any kind of credentials must not be stored in the code, but for the sake of simplicity it is currently done like this
-  - All communication channels should of course be encrypted for productive use (up to now unencrypted)
-- API Gateway only provides data from the database via REST API
-- Using multiple brokers on a productive system to increase the scalability and availability of the system
+- Focus of the project is on the data infrastructure, less on the full implementation of 
+  - the individual microservices (error handling, unit tests)
+  - detailed security configurations (encrypted communication)
+  - full-featured consumer interface
+  - replication (multiple brokers)
+- Performance of the system still has potential for improvement
+- Currently, two sensors are simulated by the sensor simulator, each of which publish a value via MQTT every second, one sensor as integer and the other as float values
 
 # Bibliography
 
