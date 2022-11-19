@@ -20,6 +20,22 @@ To get the infrastructure running on a local machine, only the following steps a
    docker compose -f "docker-compose.yaml" up -d --build
    ```
 
+# External Interfaces
+
+- Grafana: `localhost:3000`  
+  Initial login: user = admin, password = admin  
+  The dashboard visualize
+  - the number of data values received, processed and sent per min for the data_collection, data_processing and data_aggregation microservices
+  - the number of values loaded into the database per min
+  - the latency of the data values from the data simulation to the loading into the database
+  - the number of REST API requests and the age of the requested last values
+- Consumer API (Swagger UI): `localhost:8007/docs`  
+  There are three HTTP GET methods implemented:
+  - `/temperature`: Get all temperature values from the database for a specific sensor number between two timestamps
+  - `/average`: Get all average values from the database for a specific sensor number between two timestamps
+  - `/temperature_latest`: Get the latest available temperature value from the database for a specific sensor number
+  ![Consumer_API](.docs/../docs/assets/images/Consumer_API.png)
+
 # Project Description
 
 To build a flexible, scalable and fault-tolerant environment with low latency, the modern stream processing system Kafka will be used. The infrastructure is implemented with only one broker. Depending on the load on the productive system, distribution and replication can be implemented at any time using multiple brokers to increase the scalability and availability of the system.
@@ -38,8 +54,6 @@ The data from a Postgres database are provided to consumers through a REST API v
 Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 
 # Project Structure
-
-TODO: Describe modules/files
 
 `$ tree --dirsfirst`  
 `.`  
@@ -102,22 +116,6 @@ TODO: Describe modules/files
 `├── LICENSE`: License file  
 `└── README.md`: This README file  
 
-# External Interfaces
-
-- Grafana: `localhost:3000`  
-  Initial login: user = admin, password = admin  
-  The dashboard visualize
-  - the number of data values received, processed and sent per min for the data_collection, data_processing and data_aggregation microservices
-  - the number of values loaded into the database per min
-  - the latency of the data values from the data simulation to the loading into the database
-  - the number of REST API requests and the age of the requested last values
-- Consumer API (Swagger UI): `localhost:8007/docs`  
-  There are three HTTP GET methods implemented:
-  - `/temperature`: Get all temperature values from the database for a specific sensor number between two timestamps
-  - `/average`: Get all average values from the database for a specific sensor number between two timestamps
-  - `/temperature_latest`: Get the latest available temperature value from the database for a specific sensor number
-  ![Consumer_API](.docs/../docs/assets/images/Consumer_API.png)
-
 # Used Sources
 
 - Project is based on ideas from [microservice_in_python](https://github.com/KrasnovVitaliy/microservice_in_python) GitHub repository from [KrasnovVitaliy](https://github.com/KrasnovVitaliy)
@@ -129,19 +127,13 @@ TODO: Describe modules/files
 - confluentinc/cp-kafka: Community licensed ([Docker Image Reference](https://docs.confluent.io/platform/current/installation/docker/image-reference.html))
 - confluentinc/cp-kafka-mqtt: Commercially licensed ([Docker Image Reference](https://docs.confluent.io/platform/current/installation/docker/image-reference.html))
 - Latency and age measurements depend on synchronisation of the different container-system-times (not an issue on a local machine)
-
-# Status and Open Points
-
-- Sensor simulation can be further extended by data variation and number of sensors (currently only one sensor streams integer temperature values every second)
-- Microservice Implementations
-  - Error handling must be extended
-  - Unit Tests should be added
-  - Performance of the system still has potential for improvement
-- Security
-  - Any kind of credentials must not be stored in the code, but for the sake of simplicity it is currently done like this
-  - All communication channels should of course be encrypted for productive use (up to now unencrypted)
-- API Gateway only provides data from the database via REST API
-- Using multiple brokers on a productive system to increase the scalability and availability of the system
+- Focus of the project is on the data infrastructure, less on the full implementation of 
+  - the individual microservices (error handling, unit tests)
+  - detailed security configurations (encrypted communication)
+  - full-featured consumer interface
+  - replication (multiple brokers)
+- Performance of the system still has potential for improvement
+- Currently, two sensors are simulated by the sensor simulator, each of which publish a value via MQTT every second, one sensor as integer and the other as float values
 
 # Bibliography
 
