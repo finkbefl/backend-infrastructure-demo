@@ -113,6 +113,7 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 `│   │   └── requirements.txt`: Microservice requirements installed within the container  
 `│   └── Dockerfile`: Docker image definition  
 `├── docker-compose.yaml`: Docker Compose file to launch the docker infrastructure  
+`├── .env`: Docker Compose environment variables  
 `├── LICENSE`: License file  
 `└── README.md`: This README file  
 
