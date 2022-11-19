@@ -42,65 +42,65 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
 TODO: Describe modules/files
 
 `$ tree --dirsfirst`  
-.  
-├── aggregation  
-│   ├── data_aggregation  
-│   │   ├── main.py  
-│   │   └── requirements.txt  
-│   └── Dockerfile  
-├── api-gateway  
-│   ├── api_gateway  
-│   │   ├── database.py  
-│   │   ├── data_definition.py  
-│   │   ├── main.py  
-│   │   └── requirements.txt  
-│   └── Dockerfile  
-├── collection  
-│   ├── data_collection  
-│   │   ├── main.py  
-│   │   └── requirements.txt  
-│   └── Dockerfile  
-├── config  
-│   ├── grafana  
-│   │   ├── dashboards  
-│   │   │   └── services_dashboard.json  
-│   │   └── provisioning  
-│   │       ├── dashboards  
-│   │       │   └── default.yaml  
-│   │       └── datasources  
-│   │           └── datasource.yaml  
-│   ├── mqtt-broker  
-│   │   └── mosquitto.conf  
-│   └── prometheus  
-│       └── prometheus.yaml  
-├── docs  
-│   └── assets  
-│       └── images  
-│           ├── Consumer_API.png  
-│           └── Data_Infrastructure.png  
-├── load  
-│   ├── db_loader  
-│   │   ├── database.py  
-│   │   ├── data_definition.py  
-│   │   ├── main.py  
-│   │   └── requirements.txt  
-│   └── Dockerfile  
-├── processing  
-│   ├── data_processing  
-│   │   ├── main.py  
-│   │   └── requirements.txt  
-│   └── Dockerfile  
-├── sensor-simulator  
-│   ├── mqtt_proof_of_concept_scripts  
-│   │   ├── publish.py  
-│   │   └── subscribe.py  
-│   ├── temp_sensors  
-│   │   ├── main.py  
-│   │   └── requirements.txt  
-│   └── Dockerfile  
-├── docker-compose.yaml  
-├── LICENSE  
-└── README.md  
+`.`  
+`├── aggregation`: Module which implements data-aggregation   
+`│   ├── data_aggregation`: Microservice implementations   
+`│   │   ├── main.py`: Aggregation of the processed data in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── api-gateway`: Module which implements the API gateway  
+`│   ├── api_gateway`: Microservice implementations    
+`│   │   ├── database.py`: Postgres database interface  
+`│   │   ├── data_definition.py`: Definitions of the database table structures  
+`│   │   ├── main.py`: Consumer REST-API via python FastAPI  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container   
+`│   └── Dockerfile`: Docker image definition  
+`├── collection`: Module which implements data-collection  
+`│   ├── data_collection`: Microservice implementations    
+`│   │   ├── main.py`: Collection of the raw sensor data in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── config`: Central configuration  
+`│   ├── grafana`: Grafana config  
+`│   │   ├── dashboards`: Dashboard definitions  
+`│   │   │   └── services_dashboard.json`: The microservice dashboard  
+`│   │   └── provisioning`: Grafana provision  
+`│   │       ├── dashboards`: Dashboard provisioning  
+`│   │       │   └── default.yaml`: Provision the dashboard  
+`│   │       └── datasources`: Datasource provisioning  
+`│   │           └── datasource.yaml`: Provision the datasources  
+`│   ├── mqtt-broker`: MQTT broker config (temporarily used for testing)  
+`│   │   └── mosquitto.conf`: Mosquitto MQTT broker config  
+`│   └── prometheus`: Prometheus config  
+`│       └── prometheus.yaml`: Configuration of prometheus  
+`├── docs`: Files for documentation  
+`│   └── assets`: Assets for documentation  
+`│       └── images`: Images for documentation  
+`│           ├── Consumer_API.png`: Screenshot of the consumer API swagger UI  
+`│           └── Data_Infrastructure.png`: Architecture overview  
+`├── load`: Module which implements data-loading into the database   
+`│   ├── db_loader`: Microservice implementations    
+`│   │   ├── database.py`: Postgres database interface  
+`│   │   ├── data_definition.py`: Definitions of the database table structures  
+`│   │   ├── main.py`: Loading of the processed and aggregated data into the database in python   
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── processing`: Module which implements data-processing   
+`│   ├── data_processing`: Microservice implementations    
+`│   │   ├── main.py`: Processing of the collected data in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── sensor-simulator`: Module which implements the sensor simulation  
+`│   ├── mqtt_proof_of_concept_scripts`: Python scripts used for first PoC using paho mqtt python client  
+`│   │   ├── publish.py`: Python script to test mqtt publishing  
+`│   │   └── subscribe.py`: Python script to test mqtt subscribing  
+`│   ├── temp_sensors`: Microservice implementations    
+`│   │   ├── main.py`: Publish random temperature values between a range in python  
+`│   │   └── requirements.txt`: Microservice requirements installed within the container  
+`│   └── Dockerfile`: Docker image definition  
+`├── docker-compose.yaml`: Docker Compose file to launch the docker infrastructure  
+`├── LICENSE`: License file  
+`└── README.md`: This README file  
 
 # External Interfaces
 
