@@ -2,6 +2,17 @@
 
 Demo project of a backend infrastructure in python with kafka and faust for data-intensive real-time applications.
 
+# Table of Contents
+- [Prerequisites](#prerequisites)
+- [Launch](#launch)
+- [External Interfaces](#external-interfaces)
+- [Project Description](#project-description)
+- [Project Structure](#project-structure)
+- [Used Sources](#used-sources)
+- [Restrictions](#restrictions)
+- [Parallel Batch Processing Pipeline](#parallel-batch-processing-pipeline)
+- [Bibliography](#bibliography)
+
 # Prerequisites
 
 [Docker Desktop](https://docs.docker.com/desktop/) (tested with version 4.12.0) must be installed, or at least
@@ -135,6 +146,15 @@ Source: Own illustration based on Alaasam et al., 2019, Fig. 1
   - replication (multiple brokers)
 - Performance of the system still has potential for improvement
 - Currently, two sensors are simulated by the sensor simulator, each of which publish a value via MQTT every second, one sensor as integer and the other as float values
+
+# Parallel Batch Processing Pipeline
+
+Batch processing is still used in many existing systems.
+The question is how the infrastructure can be extended so that batch processing of data is possible in parallel. The answer here could also be Apache Kafka to continue to take full advantage of data streaming and combine it with batch processing, e.g. for existing batch data sources. See the following blog post for more details: [How to implement Batch Processing with Apache Kafka](https://www.kadeck.com/blog/how-to-implement-batch-processing-with-apache-kafka)
+
+One solution could be to add more brokers in parallel to the stream infrastructure and link them to suitable microservices which take over the batch processing. The processed and aggregated data from both pipelines can thus also be easily made available via a consumer interface.
+
+Using Kafka for batch processing has advantages and disadvantages compared to traditional batch processing systems. For processing large amounts of data, however, Kafka's scaling capabilities are definitely a decisive criteria, especially if a streaming pipeline via Kafka is required in parallel anyway. See the following blog post for more details: [ETL Batch Processing With Kafka?](https://medium.com/swlh/etl-batch-processing-with-kafka-7f66f843e20d)
 
 # Bibliography
 
