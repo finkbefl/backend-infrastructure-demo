@@ -39,7 +39,7 @@ async def on_event(stream) -> None:
     async for msg_key, msg_value in stream.items():
         # At first imcrement the event counter for prometheus monitoring of the received sensor values
         SENSOR_VALUES_COUNT.inc()
-        logger.info(f'Key: {msg_key} - Received new sensor value {msg_value}')
+        logger.info(f'Received new sensor value {msg_value}')
         serialized_message = json.loads(msg_value)
         # Aggregate the data of the specific sensor number: Average over the last 10 values (TODO: Over time better?)
         sensor_num = serialized_message['sensor_num']
@@ -54,7 +54,7 @@ async def on_event(stream) -> None:
             average_value['average'] = sensor_val
         # Increment the prometheus counter for aggregated values
         AGGREGATED_VALUES_COUNT.inc()
-        logger.info(f"Aggregated value: {average_value}")
+        logger.info(f"Aggregated value for sensor_num {sensor_num}: {average_value}")
         # write it back to the table (also updating changelog):
         average_table[sensor_num] = average_value
         # Increment the prometheus counter for sent values (via changelog topic of the app table)

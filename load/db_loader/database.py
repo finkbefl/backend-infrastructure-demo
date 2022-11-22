@@ -78,16 +78,9 @@ class Database():
         """
         async with AsyncSession(self.db_engine) as session:
             async with session.begin():
-                selected_average_execution = await session.execute(
-                    select(Average).filter(Average.sensor_num == sensor_num))
-                selected_average = selected_average_execution.scalars().first()
-                if selected_average:
-                    logger.info(f"Update existing average {sensor_num}: {value}")
-                    selected_average.value = value
-                else:
-                    logger.info(f"Save average {sensor_num}: {value}")
-                    average = Average(timestamp=timestamp, sensor_num=sensor_num, value=value)
-                    session.add(average)
+                logger.info(f"Save average {sensor_num}: {value}")
+                average = Average(timestamp=timestamp, sensor_num=sensor_num, value=value)
+                session.add(average)
 
 
 async def async_main():

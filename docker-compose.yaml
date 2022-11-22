@@ -28,6 +28,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
 
+  # MQTT Proxy
+
   kafka-mqtt-proxy:
     image: confluentinc/cp-kafka-mqtt:${CONFLUENT_VERSION}
     ports:
@@ -37,7 +39,7 @@ services:
       - broker
     environment:
       KAFKA_MQTT_BOOTSTRAP_SERVERS: PLAINTEXT_INTERNAL://broker:29092
-      KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data1:.*
+      KAFKA_MQTT_TOPIC_REGEX_LIST: sensor-data2:.*2/temp, sensor-data1:.*1/temp
       KAFKA_MQTT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
 
   # Database
@@ -52,24 +54,16 @@ services:
     ports:
       - ${PG_HOST_PORT}:${PG_CONTAINER_PORT}
 
-  # # pgAdmin (for development and administration of the postgres database)
-
-  # pgadmin:
-  #   image: chorss/docker-pgadmin4
-  #   restart: unless-stopped
-  #   ports:
-  #     - ${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}
-  #   depends_on:
-  #     - database
-
   # Python Microservices
 
+  # Simulate Temperature Sensors
   sensor-simulator:
     container_name: sensor-simulator
     build:
       context: ./sensor-simulator
     restart: unless-stopped
 
+  # Collect Sensor Data
   collection:
     build:
       context: ./collection
@@ -77,6 +71,7 @@ services:
     ports:
       - ${COLLECTION_STATS_HOST_PORT}:${COLLECTION_STATS_CONTAINER_PORT}
 
+  # Process Temperature Values
   processing:
     build:
       context: ./processing
@@ -84,6 +79,7 @@ services:
     ports:
       - ${PROCESSING_STATS_HOST_PORT}:${PROCESSING_STATS_CONTAINER_PORT}
 
+  # Aggregate the Data
   aggregation:
     build:
       context: ./aggregation
@@ -91,6 +87,7 @@ services:
     ports:
       - ${AGGREGATION_STATS_HOST_PORT}:${AGGREGATION_STATS_CONTAINER_PORT}
 
+  # Load Data into Database
   load:
     build:
       context: ./load
@@ -98,6 +95,7 @@ services:
     ports:
       - ${LOAD_STATS_HOST_PORT}:${LOAD_STATS_CONTAINER_PORT}
 
+  # API-Gateway (REST) for external Consumers/ Applications
   api-gateway:
     build:
       context: ./api-gateway
@@ -105,18 +103,6 @@ services:
     ports:
       - ${GATEWAY_HOST_PORT}:${GATEWAY_CONTAINER_PORT}
       - ${GATEWAY_STATS_HOST_PORT}:${GATEWAY_STATS_CONTAINER_PORT}
-    
-
-  # MQTT Broker (For test purposes if no mqtt proxy)
-
-  # mosquitto:
-  #   container_name: first-steps-mqtt-broker
-  #   image: eclipse-mosquitto
-  #   ports:
-  #     - ${MQTT_BROKER_HOST_PORT}:${MQTT_BROKER_CONTAINER_PORT}
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./config/mqtt-broker:/mosquitto/config/
 
   # Monitoring with Grafana and Prometheus
 
@@ -139,3 +125,24 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+
+# Temporarily used for testing and deeper analysis
+
+  # # pgAdmin (for development and administration of the postgres database)
+  # pgadmin:
+  #   image: chorss/docker-pgadmin4
+  #   restart: unless-stopped
+  #   ports:
+  #     - ${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}
+  #   depends_on:
+  #     - database
+  #
+  # # MQTT Broker (For test purposes if no mqtt proxy)
+  # mosquitto:
+  #   container_name: first-steps-mqtt-broker
+  #   image: eclipse-mosquitto
+  #   ports:
+  #     - ${MQTT_BROKER_HOST_PORT}:${MQTT_BROKER_CONTAINER_PORT}
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./config/mqtt-broker:/mosquitto/config/
