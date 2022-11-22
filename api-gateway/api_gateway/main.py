@@ -53,12 +53,14 @@ async def get_average_values(sensor_num: int, timestamp_start: float, timestamp_
 async def get_temperature_latest(sensor_num: int) -> int:
     logger.info("Get latest temp")
     LATEST_VALUE_COUNT.inc()
-    # Calc age in seconds
     received_data = await db.get_latest_temperature_value(sensor_num)
-    # TODO Error handling (e.g. no data received)
-    age = datetime.datetime.now().timestamp() - float(received_data[0]['timestamp'])
-    logger.info(f"Calculated age of latest temp: {age}")
-    LATEST_VALUE_AGE.observe(age)
+    # Calc age in seconds
+    if received_data:
+        age = datetime.datetime.now().timestamp() - float(received_data[0]['timestamp'])
+        logger.info(f"Calculated age of latest temp: {age}")
+        LATEST_VALUE_AGE.observe(age)
+    else:
+        logger.error(f"No temp available for sensor_num {sensor_num}")
     return received_data
 
 @fastapi_app.on_event("startup")
